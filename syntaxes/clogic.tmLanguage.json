@@ -1,0 +1,663 @@
+{
+  "scopeName": "clogic.injection",
+  "injectionSelector": "L:source.c",
+  "patterns": [
+    {
+      "begin": "/\\*@",
+      "end": "\\*/",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.block.begin.clogic"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": " punctuation.block.end.clogic"
+        }
+      },
+      "name": "block.clogic",
+      "patterns": [
+        {
+          "include": "#predicate-definition"
+        },
+        {
+          "include": "#specification-definition"
+        }
+      ]
+    }
+  ],
+  "repository": {
+    "specification-definition": {
+      "name": "meta.definition.specification.clogic",
+      "begin": "\\b(spec)\\s*(\\w+)\\s*(?=\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.specification.clogic"
+        },
+        "2": {
+          "name": "entity.name.predicate.clogic"
+        }
+      },
+      "end": "(?<=})",
+      "patterns": [
+        {
+          "include": "#specification-parameters"
+        },
+        {
+          "include": "#specification-body"
+        }
+      ]
+    },
+    "specification-parameters": {
+      "name": "meta.definition.specification.parameters.clogic",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "end": "\\)(?:(?=\\s*{))",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#punctuation-comma"
+        }
+      ]
+    },
+    "specification-body": {
+      "begin": "{",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.curly.clogic"
+        }
+      },
+      "end": "}",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.curly.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "match": "\\bOR\\b",
+          "name": "punctuation.separator.or.clogic"
+        },
+        {
+          "match": "\\b(requires|ensures)\\s*(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.specification.clogic"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.clogic"
+            }
+          }
+        },
+        {
+          "include": "#assertion"
+        }
+      ]
+    },
+    "predicate-definition": {
+      "name": "meta.definition.predicate.clogic",
+      "begin": "\\b(pred)\\s*(\\w+)\\s*(?=\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.predicate.clogic"
+        },
+        "2": {
+          "name": "entity.name.predicate.clogic"
+        }
+      },
+      "end": "(?<=})",
+      "patterns": [
+        {
+          "include": "#predicate-parameters"
+        },
+        {
+          "include": "#predicate-body"
+        }
+      ]
+    },
+    "predicate-body": {
+      "begin": "{",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.curly.clogic"
+        }
+      },
+      "end": "}",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.curly.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#predicate-assertion-annotation"
+        },
+        {
+          "include": "#assertion"
+        },
+        {
+          "include": "#punctuation-semicolon"
+        }
+      ]
+    },
+    "predicate-assertion-annotation": {
+      "begin": "(\\[\\[)\\s*(\\w+)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.begin.bracket.double.clogic"
+        },
+        "2": {
+          "name": "entity.name.definition-label.clogic"
+        }
+      },
+      "end": "\\]\\]",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.end.bracket.double.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#logic-var-with-type"
+        }
+      ]
+    },
+    "predicate-parameters": {
+      "name": "meta.definition.predicate.parameters.clogic",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "end": "\\)(?:(?=\\s*{))",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "match": "(\\+)?\\s*(\\w+)\\s*((:)\\s*(Num|Set))",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.optional.ins.clogic"
+            },
+            "2": {
+              "name": "variable.parameter.clogic"
+            },
+            "4": {
+              "name": "punctuation.separator.colon.clogic"
+            },
+            "5": {
+              "name": "support.type.primite.clogic meta.type.annotation.clogic"
+            }
+          }
+        }
+      ]
+    },
+    "assertion": {
+      "patterns": [
+        {
+          "include": "#paren-assertion"
+        },
+        {
+          "include": "#emp-assertion"
+        },
+        {
+          "include": "#predicate-assertion"
+        },
+        {
+          "include": "#formula"
+        },
+        {
+          "include": "#operator-sl-star"
+        },
+        {
+          "include": "#pointsto-assertion"
+        }
+      ]
+    },
+    "pointsto-assertion": {
+      "patterns": [
+        {
+          "include": "#pointsto-operator"
+        },
+        {
+          "include": "#constructor"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "predicate-assertion": {
+      "begin": "\\b(\\w+)\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.predicate.clogic"
+        },
+        "2": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "emp-assertion": {
+      "patterns": [
+        {
+          "name": "keyword.other.emp.clogic",
+          "match": "\\bemp\\b"
+        }
+      ]
+    },
+    "paren-assertion": {
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#assertion"
+        }
+      ]
+    },
+    "formula": {
+      "patterns": [
+        {
+          "include": "#formula-operator"
+        },
+        {
+          "include": "#paren-formula"
+        },
+        {
+          "match": "\\bTrue\\b",
+          "name": "constant.language.boolean.true.clogic"
+        },
+        {
+          "match": "\\bFalse\\b",
+          "name": "constant.language.boolean.false.clogic"
+        },
+        {
+          "include": "#forall-formula"
+        }
+      ]
+    },
+    "paren-formula": {
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#formula"
+        }
+      ]
+    },
+    "forall-formula": {
+      "begin": "\\b(forall)\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.logic.forall.clogic"
+        }
+      },
+      "end": "\\.",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.separator.dot.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#logic-var-with-type"
+        }
+      ]
+    },
+    "constructor": {
+      "patterns": [
+        {
+          "begin": "\\b(struct)\\s*(\\w+)\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.struct.clogic"
+            },
+            "2": {
+              "name": "entity.name.structure.clogic"
+            },
+            "3": {
+              "name": "punctuation.definition.begin.bracket.curly.clogic"
+            }
+          },
+          "end": "}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.end.bracket.curly.clogic"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expression"
+            },
+            {
+              "include": "#punctuation-semicolon"
+            }
+          ]
+        }
+      ]
+    },
+    "expression": {
+      "patterns": [
+        {
+          "include": "#paren-expression"
+        },
+        {
+          "include": "#csval"
+        },
+        {
+          "include": "#binary-operator"
+        },
+        {
+          "include": "#unary-operator"
+        },
+        {
+          "include": "#nary-operator-expression"
+        },
+        {
+          "include": "#list-expression"
+        },
+        {
+          "include": "#set-expression"
+        },
+        {
+          "include": "#simple-expression"
+        }
+      ]
+    },
+    "nary-operator-expression": {
+      "begin": "(-u-)\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.set.clogic"
+        },
+        "2": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        },
+        {
+          "include": "#punctuation-comma"
+        }
+      ]
+    },
+    "set-expression": {
+      "begin": "-{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.set.clogic"
+        }
+      },
+      "end": "}-",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.set.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        },
+        {
+          "include": "#punctuation-comma"
+        }
+      ]
+    },
+    "list-expression": {
+      "patterns": [
+        {
+          "match": "\\bnil\\b",
+          "name": "constant.language.nil.clogic"
+        },
+        {
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.list.clogic"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.list.clogic"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expression"
+            },
+            {
+              "include": "#punctuation-comma"
+            }
+          ]
+        }
+      ]
+    },
+    "paren-expression": {
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "csval": {
+      "patterns": [
+        {
+          "match": "\\bTRUE\\b",
+          "name": "constant.language.boolean.true.clogic"
+        },
+        {
+          "match": "\\bFALSE\\b",
+          "name": "constant.language.boolean.false.clogic"
+        },
+        {
+          "match": "\\NULL\\b",
+          "name": "constant.language.null.clogic"
+        },
+        {
+          "begin": "\\b(int|float|long|single|ptr)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.clogic"
+            },
+            "2": {
+              "name": "meta.brace.round.clogic"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.clogic"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#simple-expression"
+            },
+            {
+              "include": "#punctuation-comma"
+            }
+          ]
+        }
+      ]
+    },
+    "simple-expression": {
+      "patterns": [
+        {
+          "include": "#number"
+        },
+        {
+          "include": "#logic-var"
+        },
+        {
+          "include": "#location"
+        },
+        {
+          "include": "#program-var"
+        }
+      ]
+    },
+    "formula-operator": {
+      "patterns": [
+        {
+          "match": "\\bnot\\b|=>",
+          "name": "keyword.operator.boolean.clogic"
+        },
+        {
+          "match": "<#|<=#|==",
+          "name": "keyword.operator.arithmetic.clogic"
+        },
+        {
+          "match": "--e--",
+          "name": "keyword.operator.set.clogic"
+        }
+      ]
+    },
+    "binary-operator": {
+      "patterns": [
+        {
+          "match": "\\+|=",
+          "name": "keyword.operator.arithmetic.clogic"
+        },
+        {
+          "match": "-s-|-d-",
+          "name": "keyword.operator.set.clogic"
+        },
+        {
+          "match": "::|@",
+          "name": "keyword.operator.list.clogic"
+        }
+      ]
+    },
+    "unary-operator": {
+      "patterns": [
+        {
+          "match": "\\blen\\b",
+          "name": "keyword.operator.list.clogic"
+        },
+        {
+          "match": "\\b\\!\\b",
+          "name": "keyword.operator.boolean.clogic"
+        }
+      ]
+    },
+    "logic-var-with-type": {
+      "match": "(#\\w+)\\s*(:)\\s*(Num|Set)\\b",
+      "captures": {
+        "1": {
+          "name": "meta.var.logic.clogic"
+        },
+        "2": {
+          "name": "punctuation.separator.colon.clogic"
+        },
+        "3": {
+          "name": "support.type.primite.clogic meta.type.annotation.clogic"
+        }
+      }
+    },
+    "pointsto-operator": {
+      "match": "-m?>",
+      "name": "keyword.operator.logic.clogic"
+    },
+    "number": {
+      "match": "-?\\d+(\\.\\d*)?",
+      "name": "constant.numeric.decimal.clogic"
+    },
+    "logic-var": {
+      "match": "#\\w+",
+      "name": "meta.var.logic.clogic"
+    },
+    "program-var": {
+      "match": "\\b\\w+\\b",
+      "name": "meta.var.program.clogic"
+    },
+    "location": {
+      "match": "\\$l\\w*",
+      "name": "constant.language.location.clogic"
+    },
+    "punctuation-comma": {
+      "match": ",",
+      "name": "punctuation.separator.comma.clogic"
+    },
+    "punctuation-semicolon": {
+      "match": ";",
+      "name": "punctuation.separator.semicolon.clogic"
+    },
+    "operator-sl-star": {
+      "match": "\\*",
+      "name": "keyword.operator.logic.clogic"
+    }
+  }
+}

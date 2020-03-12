@@ -1,0 +1,80 @@
+{
+    "name": "code-gillian",
+    "displayName": "Gillian",
+    "description": "Extension for Gillian. Handles only some syntax color for now.",
+    "version": "0.0.2",
+    "publisher": "giltho",
+    "main": "./out/extension.js",
+    "activationEvents": [
+        "onLanguage:c"
+    ],
+    "engines": {
+        "vscode": "^1.25.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "jsil",
+                "aliases": [
+                    "jsil"
+                ],
+                "extensions": [
+                    ".jsil"
+                ],
+                "configuration": "./language-configuration.json"
+            },{
+                "id": "wisl",
+                "aliases": [
+                    "wisl"
+                ],
+                "extensions": [
+                    ".wisl"
+                ],
+                "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "gil",
+                "aliases": [
+                    "gil"
+                ],
+                "extensions": [
+                    ".gil"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "jsil",
+                "scopeName": "source.jsil",
+                "path": "./syntaxes/jsil.tmLanguage.json"
+            },
+            {
+                "language": "wisl",
+                "scopeName": "source.wisl",
+                "path": "./syntaxes/wisl.tmLanguage.json"
+            },
+            {
+                "language": "gil",
+                "scopeName": "source.gil",
+                "path": "./syntaxes/gil.tmLanguage.json"
+            },
+            {
+                "injectTo": [
+                    "source.c"
+                ],
+                "scopeName": "clogic.injection",
+                "path": "./syntaxes/clogic.tmLanguage.json"
+            }
+        ]
+    },
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "tslint -p ./",
+		"watch": "tsc -watch -p ./"
+	}
+}
