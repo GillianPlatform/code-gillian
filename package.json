@@ -2,9 +2,14 @@
     "name": "code-gillian",
     "displayName": "Gillian",
     "description": "Extension for Gillian. Handles only some syntax color for now.",
-    "version": "0.0.2",
+    "version": "0.0.1",
     "publisher": "giltho",
     "main": "./out/extension.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/giltho/code-gillian.git"
+    },
+    "icon": "./images/logo.png",
     "activationEvents": [
         "onLanguage:c"
     ],

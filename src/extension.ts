@@ -7,7 +7,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   // create a decorator type that we use to decorate small numbers
   const lowerOpacityDecorationType = vscode.window.createTextEditorDecorationType({
-    opacity: '0.8'
+		dark: {
+			opacity: '0.75'
+		},
+		light: {
+			opacity: '0.6'
+		}
   });
 
 	let activeEditor = vscode.window.activeTextEditor;
@@ -22,11 +27,11 @@ export function activate(context: vscode.ExtensionContext) {
 		const text = activeEditor.document.getText();
 		let startMatch;
 		while (startMatch = regExStart.exec(text)) {
-      const startPos = activeEditor.document.positionAt(startMatch.index);
-      regExEnd.lastIndex = startMatch.index;
+      const startPos = activeEditor.document.positionAt(startMatch.index + 3);
+      regExEnd.lastIndex = startMatch.index + 3;
       const endMatch = regExEnd.exec(text);
       if(endMatch) {
-        const endPos = activeEditor.document.positionAt(endMatch.index + endMatch[0].length);
+        const endPos = activeEditor.document.positionAt(endMatch.index + 2);
         const decoration = { range: new vscode.Range(startPos, endPos) };
         blocks.push(decoration);
       }

@@ -3,6 +3,38 @@
   "injectionSelector": "L:source.c",
   "patterns": [
     {
+      "begin": "\\b(__builtin_annot)\\s*(\\()\\s*(\")",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.c"
+        },
+        "2": {
+          "name": "punctuation.section.arguments.begin.bracket.round.c"
+        },
+        "3": {
+          "name": "punctuation.definition.string.begin.c"
+        }
+      },
+      "end": "(?<!\\\\)(\")\\s*(\\))\\s*(;)",
+      "endCaptures":{
+        "1": {
+          "name": "punctuation.definition.string.end.c"
+        },
+        "2": {
+          "name": "punctuation.section.arguments.end.bracket.round.c"
+        },
+        "3": {
+          "name": "punctuation.terminator.statement.c"
+        }
+      },
+      "name": "meta.function-call.c meta.block.c source.c",
+      "patterns": [
+        {
+          "include": "#logic-command"
+        }
+      ]
+    },
+    {
       "begin": "/\\*@",
       "end": "\\*/",
       "beginCaptures": {
@@ -27,6 +59,128 @@
     }
   ],
   "repository": {
+    "logic-command": {
+      "patterns": [
+        {
+          "include": "#fold-unfold-command"
+        },
+        {
+          "include": "#assert-command"
+        },
+        {
+          "include": "#if-else-command"
+        }
+      ]
+    },
+    "if-else-command": {
+      "begin": "\\b(if)\\s*(?=\\()|\\b(else)\\s*(?={)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.if.clogic"
+        },
+        "2": {
+          "name": "keyword.control.else.clogic"
+        }
+      },
+      "end": "(?<=})",
+      "patterns": [
+        {
+          "include": "#paren-expression"
+        },
+        {
+          "begin": "{",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.clogic"
+            }
+          },
+          "end": "}",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.clogic"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#punctuation-semicolon"
+            },
+            {
+              "include": "#logic-command"
+            }
+          ]
+        }
+      ]
+    },
+    "assert-command": {
+      "begin": "\\b(assert)\\b",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.assert.clogic"
+        }
+      },
+      "end": "(?=(?<!\\\\)\"\\s*\\)\\s*;)",
+      "patterns": [
+        {
+          "include": "#assert-existentials"
+        },
+        {
+          "include": "#assertion"
+        }
+      ]
+    },
+    "assert-existentials": {
+      "begin": "(\\[\\[)\\s*(exists)\\b",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.begin.bracket.double.clogic"
+        },
+        "2": {
+          "name": "keyword.control.existentials.clogic"
+        }
+      },
+      "end": "\\]\\]",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.end.bracket.double.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#logic-var"
+        }
+      ]
+    },
+    "fold-unfold-command": {
+      "begin": "\\b(fold|unfold)\\s*(\\w+)\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.$1.clogic"
+        },
+        "2": {
+          "name": "entity.name.predicate.clogic"
+        },
+        "3": {
+          "name": "punctuation.section.arguments.begin.bracket.round.clogic"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.arguments.end.bracket.round.clogic"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
     "specification-definition": {
       "name": "meta.definition.specification.clogic",
       "begin": "\\b(spec)\\s*(\\w+)\\s*(?=\\()",
