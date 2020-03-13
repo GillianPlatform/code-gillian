@@ -2,7 +2,7 @@
     "name": "code-gillian",
     "displayName": "Gillian",
     "description": "Extension for Gillian. Handles only some syntax color for now.",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "publisher": "giltho",
     "main": "./out/extension.js",
     "repository": {
@@ -30,7 +30,8 @@
                     ".jsil"
                 ],
                 "configuration": "./language-configuration.json"
-            },{
+            },
+            {
                 "id": "wisl",
                 "aliases": [
                     "wisl"
@@ -76,10 +77,10 @@
             }
         ]
     },
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"lint": "tslint -p ./",
-		"watch": "tsc -watch -p ./"
-	}
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "lint": "tslint -p ./",
+        "watch": "tsc -watch -p ./"
+    }
 }
