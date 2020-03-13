@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
   // create a decorator type that we use to decorate small numbers
   const lowerOpacityDecorationType = vscode.window.createTextEditorDecorationType({
 		dark: {
-			opacity: '0.75'
+			opacity: '0.8'
 		},
 		light: {
 			opacity: '0.6'
