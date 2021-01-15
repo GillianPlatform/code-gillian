@@ -16,7 +16,7 @@
         }
       },
       "end": "(?<!\\\\)(\")\\s*(\\))\\s*(;)",
-      "endCaptures":{
+      "endCaptures": {
         "1": {
           "name": "punctuation.definition.string.end.c"
         },
@@ -189,7 +189,7 @@
           "name": "keyword.specification.clogic"
         },
         "2": {
-          "name": "entity.name.predicate.clogic"
+          "name": "entity.name.specification.clogic"
         }
       },
       "end": "(?<=})",
@@ -258,12 +258,15 @@
     },
     "predicate-definition": {
       "name": "meta.definition.predicate.clogic",
-      "begin": "\\b(pred)\\s*(\\w+)\\s*(?=\\()",
+      "begin": "\\b(pred)\\s*(nounfold)?\\s*(\\w+)\\s*(?=\\()",
       "beginCaptures": {
         "1": {
           "name": "keyword.predicate.clogic"
         },
         "2": {
+          "name": "keyword.nounfold.clogic"
+        },
+        "3": {
           "name": "entity.name.predicate.clogic"
         }
       },
@@ -681,7 +684,7 @@
           "name": "constant.language.null.clogic"
         },
         {
-          "begin": "\\b(int|float|long|single|ptr)\\s*(\\()",
+          "begin": "\\b(int|float|long|single|ptr|funptr)\\s*(\\()",
           "beginCaptures": {
             "1": {
               "name": "storage.type.clogic"
