@@ -2,7 +2,7 @@
     "name": "code-gillian",
     "displayName": "Gillian",
     "description": "Extension for Gillian. Handles only some syntax color for now.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "gillian",
     "main": "./out/extension.js",
     "repository": {
