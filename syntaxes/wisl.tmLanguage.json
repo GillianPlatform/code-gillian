@@ -69,7 +69,7 @@
       ]
     },
     "lemmas": {
-      "begin": "(?=(?:\\s*)(?:\\s*)?\\b(lemma)\\b(?:\\s*)([a-zA-Z][a-zA-Z_]*)\\b(?:\\s*))",
+      "begin": "(?=(?:\\s*)(?:\\s*)?\\b(lemma)\\b(?:\\s*)([a-zA-Z][a-zA-Z_]*)\\b)",
       "end": "(?<=})",
       "name": "meta.lemma.wisl",
       "patterns": [
@@ -77,16 +77,10 @@
           "include": "#comments"
         },
         {
-          "include": "#lemma_body"
+          "include": "#lemma_innards"
         },
         {
-          "begin": "\\G",
-          "end": "(?<=\\s)",
-          "patterns": [
-            {
-              "include": "#lemma_innards"
-            }
-          ]
+          "include": "#lemma_body"
         }
       ]
     },
