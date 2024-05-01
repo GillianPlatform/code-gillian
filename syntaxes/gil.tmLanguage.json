@@ -122,15 +122,15 @@
         },
 
         "identifier": {
-            "comment": "Example: myVar / #logicVar / $loc / _$aloc",
+            "comment": "Example: myVar / #logicVar / $loc / _$l_aloc",
             "patterns": [
                 {
                     "name": "variable.other.aloc.gil",
-                    "match": "\\b(\\_\\$[a-zA-Z][a-zA-Z0-9_]*)\\b"
+                    "match": "(\\_\\$l\\_[a-zA-Z0-9_]*)\\b"
                 },
                 {
                     "name": "variable.other.loc.gil",
-                    "match": "\\b(\\$[a-zA-Z][a-zA-Z0-9_]*)\\b"
+                    "match": "(\\$l[a-zA-Z0-9_]*)\\b"
                 },
                 {
                     "name": "variable.other.logicvar.gil",
