@@ -110,6 +110,9 @@
             "name": "meta.assert.gil",
             "patterns": [
                 {
+                    "include": "#comments"
+                },
+                {
                     "include": "#corepred"
                 },
                 {
