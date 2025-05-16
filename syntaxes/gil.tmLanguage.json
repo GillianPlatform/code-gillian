@@ -1,150 +1,350 @@
 {
-  "scopeName": "source.gil",
-  "name": "gil",
-  "fileTypes": [
-    "gil"
-  ],
-  "firstLineMatch": "",
-  "foldingStartMarker": "",
-  "foldingStopMarker": "",
-  "patterns": [
-    {
-      "begin": "\\(\\*",
-      "end": "\\*\\)",
-      "name": "comment.gil"
-    },
-    {
-      "match": "\\b(proc)\\s+(\\w+)\\s*\\(.*\\)",
-      "name": "meta.function.gil",
-      "captures": {
-        "1": {
-          "name": "keyword.control.gil"
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "scopeName": "source.gil",
+    "name": "gil",
+    "fileTypes": ["gil"],
+    "firstLineMatch": "",
+    "foldingStartMarker": "",
+    "foldingStopMarker": "",
+    "patterns": [
+        { "include": "#comments" },
+        { "include": "#headers" },
+        { "include": "#label" },
+        { "include": "#commands" },
+        { "include": "#logic" },
+        { "include": "#types" },
+        { "include": "#builtins" },
+        { "include": "#literals" },
+        { "include": "#assert" },
+        { "include": "#definition" },
+        { "include": "#fail" },
+        { "include": "#corepred" },
+        { "include": "#action" },
+        { "include": "#strings" },
+        { "include": "#number" },
+        { "include": "#operators" },
+        { "include": "#fncall" },
+        { "include": "#identifier" }
+    ],
+    "repository": {
+        "headers": {
+            "comment": "Example: #internal",
+            "patterns": [
+                {
+                    "name": "keyword.other.gil",
+                    "match": "^[#|@]\\w+"
+                }
+            ]
         },
-        "2": {
-          "name": "entity.name.function.gil"
-        }
-      }
-    },
-    {
-      "match": "\\b(spec)\\s+(\\w+)\\s*\\(.*\\)",
-      "name": "meta.function.gil",
-      "contentName": "",
-      "captures": {
-        "1": {
-          "name": "keyword.control.gil"
+        "comments": {
+            "comment": "Example: (* comment (* nested comment *) *)",
+            "patterns": [
+                {
+                    "begin": "\\(\\*",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.gil"
+                        }
+                    },
+                    "end": "\\*\\)",
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.gil"
+                        }
+                    },
+                    "name": "comment.block.gil",
+                    "patterns": [
+                        {
+                            "include": "#comments"
+                        }
+                    ]
+                }
+            ]
         },
-        "2": {
-          "name": "entity.name.function.gil"
+        "commands": {
+            "name": "keyword.other.gil",
+            "match": "\\b(skip|args|goto|with|apply|return|throw|extern|axiomatic|incomplete|normal|error|import|verify)\\b"
+        },
+        "logic": {
+            "name": "keyword.control.gil",
+            "match": "\\b(fold|unfold|unfold_all|symb_exec|if|then|else|macro|invarian|assert|assume|assume_type|fresh_svar|bind|existencials|sep_assert|branch|use_subst)\\b"
+        },
+        "types": {
+            "name": "support.type.gil",
+            "match": "\\b(Undefined|Null|Empty|None|Bool|Int|Num|Str|Obj|List|Type|Set)\\b"
+        },
+        "literals": {
+            "name": "constant.language.literal.gil",
+            "match": "\\b(undefined|null|empty|true|false|nan|inf|nil|\\$\\$random)\\b"
+        },
+        "strings": {
+            "name": "string.quoted.double.gil",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.gil",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "operators": {
+            "name": "keyword.operator.gil",
+            "match": "(and|or|not|\\\\\\/|\\/\\\\|\\-\\-e\\-\\-|\\-\\-s\\-\\-|\\-u\\-|\\-i\\-|\\-d\\-|\\-e\\-|\\-s\\-|&l|\\|l|\\^l|<<l|>>>l|>>l|l\\+|==>|==|\\*\\*|\\+\\+|i<#|i<=#|<#|<=#|s<#|=|\\-\\*|i<=|i>=|i<|i>|i\\+|i\\-|i\\*|i\\/|i%|<=|>=|\\+|\\-|\\*|\\/|%|s<|&|\\||\\^|>>>|>>|>|<<|<|!)"
+        },
+
+        "assert": {
+            "comment": "[[ assertions... ]]",
+            "begin": "\\[\\[",
+            "end": "\\]\\]",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.assert.gil"
+                }
+            },
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.assert.gil"
+                }
+            },
+            "name": "meta.assert.gil",
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#corepred"
+                },
+                {
+                    "include": "#operators"
+                },
+                {
+                    "include": "#value"
+                }
+            ]
+        },
+
+        "identifier": {
+            "comment": "Example: myVar / #logicVar / $loc / _$l_aloc",
+            "patterns": [
+                {
+                    "name": "variable.other.aloc.gil",
+                    "match": "(\\_\\$l\\_[a-zA-Z0-9_]*)\\b"
+                },
+                {
+                    "name": "variable.other.loc.gil",
+                    "match": "(\\$l[a-zA-Z0-9_]*)\\b"
+                },
+                {
+                    "name": "variable.other.logicvar.gil",
+                    "match": "(#[a-zA-Z][a-zA-Z0-9_]*)\\b"
+                },
+                {
+                    "name": "variable.other.var.gil",
+                    "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b"
+                }
+            ]
+        },
+
+        "fncall": {
+            "patterns": [
+                {
+                    "begin": "\\b([a-zA-Z_][a-zA-Z0-9_]*)(\\()",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "entity.name.function.gil"
+                        },
+                        "2": {
+                            "name": "punctuation.definition.parameters.gil"
+                        }
+                    },
+                    "end": "\\)",
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.parameters.gil"
+                        }
+                    },
+                    "name": "meta.function-call.gil",
+                    "patterns": [
+                        {
+                            "include": "#parameters"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "number": {
+            "comment": "Example: 123 / 123.456 / -123 / 13i / -13i",
+            "patterns": [
+                {
+                    "name": "constant.numeric.number.gil",
+                    "match": "\\b(-?[0-9]+[.0-9+]?)\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.gil",
+                    "match": "\\b(-?[0-9]+i)\\b"
+                }
+            ]
+        },
+
+        "value": {
+            "patterns": [
+                { "include": "#number" },
+                { "include": "#literals" },
+                { "include": "#strings" },
+                { "include": "#identifier" }
+            ]
+        },
+
+        "parameters": {
+            "comment": "Example: (x, y, z; a, b, c)",
+            "begin": "\\(",
+            "end": "\\)",
+            "patterns": [
+                {
+                    "include": "#value"
+                },
+                {
+                    "match": ",",
+                    "name": "punctuation.separator.gil"
+                },
+                {
+                    "match": ";",
+                    "name": "punctuation.separator.gil"
+                }
+            ]
+        },
+        "corepred": {
+            "comment": "Example: <predName>(<parameters>)",
+            "patterns": [
+                {
+                    "begin": "(<)([a-zA-Z_][a-zA-Z0-9_]*)(>)(?=(\\())",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "punctuation.definition.predicate.gil"
+                        },
+                        "2": {
+                            "name": "support.class.predicate.gil"
+                        },
+                        "3": {
+                            "name": "punctuation.definition.predicate.gil"
+                        }
+                    },
+                    "end": "\\(",
+                    "name": "entity.name.function.corepred.gil",
+                    "patterns": [
+                        {
+                            "include": "#parameters"
+                        }
+                    ]
+                }
+            ]
+        },
+        "action": {
+            "comment": "Example: [actionName](<parameters>)",
+            "patterns": [
+                {
+                    "begin": "(\\[)([a-zA-Z_][a-zA-Z0-9_]*)(\\])(?=(\\())",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "punctuation.definition.action.gil"
+                        },
+                        "2": {
+                            "name": "support.class.action.gil"
+                        },
+                        "3": {
+                            "name": "punctuation.definition.action.gil"
+                        }
+                    },
+                    "end": "\\(",
+                    "name": "entity.name.function.action.gil",
+                    "patterns": [
+                        {
+                            "include": "#parameters"
+                        }
+                    ]
+                }
+            ]
+        },
+        "definition": {
+            "comment": "Example: spec predName(parameters...) \n",
+            "patterns": [
+                {
+                    "begin": "\\b((?:(?:abstract|pure|nounfold)\\s+)*)(proc|spec|pred|lemma)\\s+",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.modifier.predqualifier.gil"
+                        },
+                        "2": {
+                            "name": "keyword.other.gil"
+                        }
+                    },
+                    "end": "\\(",
+                    "name": "entity.name.function.definition.gil",
+                    "patterns": [
+                        {
+                            "include": "#parameters"
+                        }
+                    ]
+                }
+            ]
+        },
+        "label": {
+            "comment": "Example: labelName:",
+            "patterns": [
+                {
+                    "name": "entity.name.label.gil",
+                    "match": "^\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*:[^=]"
+                }
+            ]
+        },
+        "builtins": {
+            "comment": "Example: l-nth, ...",
+            "patterns": [
+                {
+                    "name": "support.function.builtin.gil",
+                    "match": "\\b(l\\-len|l\\-rev|l\\-sub|s\\-len|l\\-nth|l\\-repeat|s\\-nth|typeOf|m_abs|m_acos|m_asin|m_atan|m_ceil|m_cos|m_exp|m_floor|m_log|m_round|m_sgn|m_sin|m_sqrt|m_tan|as_int|as_num|num_to_string|num_to_int|num_to_uint16|num_to_int32|num_to_uint32|string_to_num|car|cdr|set_to_list)\\b"
+                }
+            ]
+        },
+        "builtinvars": {
+            "comment": "Example: ret",
+            "patterns": [
+                {
+                    "name": "variable.other.builtin.gil",
+                    "match": "\\b(ret)\\b"
+                }
+            ]
+        },
+        "fail": {
+            "comment": "fail[Reason](parameters...)",
+            "patterns": [
+                {
+                    "begin": "\\b(fail)\\s+(\\[)(\\w+)(\\])",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "keyword.other.gil"
+                        },
+                        "2": {
+                            "name": "punctuation.definition.fail.gil"
+                        },
+                        "3": {
+                            "name": "constant.character.escape"
+                        },
+                        "4": {
+                            "name": "punctuation.definition.fail.gil"
+                        }
+                    },
+                    "end": "\\(",
+                    "name": "entity.name.function.fail.gil",
+                    "patterns": [
+                        {
+                            "include": "#parameters"
+                        }
+                    ]
+                }
+            ]
         }
-      }
-    },
-    {
-      "begin": "\"",
-      "beginCaptures": {
-        "0": {
-          "name": "punctuation.definition.string.begin.gil"
-        }
-      },
-      "end": "\"",
-      "endCaptures": {
-        "0": {
-          "name": "punctuation.definition.string.end.gil"
-        }
-      },
-      "name": "string.quoted.single.gil",
-      "contentName": ""
-    },
-    {
-      "match": "(\\$\\$undefined_type)|(\\$\\$null_type)|(\\$\\$empty_type)|(\\$\\$none_type)|(\\$\\$boolean_type)|(\\$\\$number_type)|(\\$\\$string_type)|(\\$\\$object_type)|(\\$\\$list_type)|(\\$\\$type_type)|(\\$\\$set_type)",
-      "name": "entity.name.type.gil"
-    },
-    {
-      "match": "(\\$\\$min_float)|(\\$\\$max_float)|(\\$\\$random)|(\\$\\$e)|(\\$\\$ln10)|(\\$\\$ln2)|(\\$\\$log2e)|(\\$\\$log10e)|(\\$\\$pi)|(\\$\\$sqrt1_2)|(\\$\\$sqrt2)|(\\$\\$UTCTime)|(\\$\\$LocalTime)",
-      "name": "constant.language.gil"
-    },
-    {
-      "match": "(\\$\\$undefined)|(\\$\\$null)|(\\$\\$empty)|(\\$\\$t)|(\\$\\$f)|(nan)|(inf)|(\\$\\$nil)|(\\bnew\\b)|(\\bdelete\\b)|(\\bdeleteObject\\b)|(\\bhasField\\b)|(\\bgetFields\\b)|(\\bargs\\b)|(\\bapply\\b)|(\\bPHI\\b)|(\\bPSI\\b)",
-      "name": "constant.language.gil"
-    },
-    {
-      "match": "(\\bret\\b)|(\\bskip\\b)|(:=)|(\\bgoto\\b)|(\\bwith\\b)",
-      "name": "keyword.control.gil"
-    },
-    {
-      "match": "(<)|(<=)|(=)|(<s)|(\\+)|(\\*)|(-)|(\\+)|(\\/)|(%)|(\\band\\b)|(\\bor\\b)|(&)|(\\|)|(\\^)|(<<)|(>>>)|(\\bm_atan2\\b)|(\\*\\*)|(::)|(@)|(\\+\\+)|(\\b-u-\\b)|(\\b-i-\\b)|(\\b-d-\\b)|(\\b-e-\\b)|(\\b-s-\\b)|(\\b--e--\\b)|(\\b--s--\\b)",
-      "name": "constant.language.gil"
-    },
-    {
-      "match": "(\\bnot\\b)|(~)|(\\bm_abs\\b)|(\\bm_acos\\b)|(\\bm_asin\\b)|(\\bm_atan\\b)|(\\bm_ceil\\b)|(\\bm_cos\\b)|(\\bm_exp\\b)|(\\bm_floor\\b)|(\\bm_log\\b)|(\\bm_round\\b)|(\\bm_sgn\\b)|(\\bm_sin\\b)|(\\bm_sqrt\\b)|(\\bm_tan\\b)|(\\bis_primitive\\b)|(\\bnum_to_string\\b)|(\\bnum_to_int\\b)|(\\bnum_to_uint16\\b)|(\\bnum_to_int32\\b)|(\\bstring_to_num\\b)|(\bcar\\b)|(\\bcdr\\b)|(\\bl-len\\b)|(\\bs-len\\b)",
-      "name": "constant.language.gil"
-    },
-    {
-      "match": "(\\btypeOf\\b)|(\\bassume\\b)|(\\bassert\\b)|(\\bmake-symbol-number\\b)|(\\bmake-symbol-string\\b)|(\\bl-nth\\b)|(\\bs-nth\\b)",
-      "name": "constant.language.gil"
-    },
-    {
-      "match": "(#(\\w|_|$)*)|($l(\\w|_)*)",
-      "name": "variable.gil"
-    },
-    {
-      "match": "^\\s*([\\.A-KM-Za-z_\\$][\\.A-Za-z0-9_\\$]*):",
-      "name": "entity.name.tag.gil"
-    },
-    {
-      "match": "",
-      "begin": "{{",
-      "beginCaptures": {
-        "0": {
-          "name": "constant.character.gil"
-        }
-      },
-      "end": "}}",
-      "endCaptures": {
-        "0": {
-          "name": "constant.character.gil"
-        }
-      },
-      "name": "string.quoted.single.gil",
-      "contentName": ""
-    },
-    {
-      "match": "",
-      "begin": "-{",
-      "beginCaptures": {
-        "0": {
-          "name": "constant.character.gil"
-        }
-      },
-      "end": "}-",
-      "endCaptures": {
-        "0": {
-          "name": "constant.character.gil"
-        }
-      },
-      "name": "string.quoted.single.gil",
-      "contentName": ""
-    },
-    {
-      "match": "",
-      "begin": "\\[\\[",
-      "end": "\\]\\]",
-      "name": "string.quoted.single.gil",
-      "contentName": ""
-    },
-    {
-      "match": "",
-      "begin": "\\[\\*",
-      "end": "\\*\\]",
-      "name": "string.quoted.single.gil",
-      "contentName": ""
-    },
-    {
-      "match": "",
-      "begin": "\\[\\+",
-      "end": "\\+\\]",
-      "name": "string.quoted.single.gil",
-      "contentName": ""
     }
-  ],
-  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
 }
